@@ -1,9 +1,22 @@
 # utils/gen_alias.fish
 
 function gen_alias
-    check_command "yq"
-    # Path to YAML file
+    # Default YAML file path
     set yaml_file "$PWD/scripts/aliases.yaml"
+
+    # Parse options
+    for arg in $argv
+        switch $arg
+            case '--config'
+                set yaml_file (string split '=' $argv[2]) # Fetch the config file path from the flag
+                break
+            case '*'
+                # Handle other flags or arguments if necessary
+                break
+        end
+    end
+
+    check_command "yq"
 
     # Check if yq (YAML processor) is installed
     if not command -q yq

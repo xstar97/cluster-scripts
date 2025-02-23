@@ -1,5 +1,6 @@
 aliases:
   utils: "scripts/utils.sh"
+  update-scripts: "git --git-dir=./scripts/.git --work-tree=./scripts pull"
   dns: "utils dns"
   updateFlux: "utils flux_updater"
   cleanupFlux: "utils flux_cleanup"
