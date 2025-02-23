@@ -1,0 +1,20 @@
+aliases:
+  utils: "scripts/utils.sh"
+  dns: "utils dns"
+  updateFlux: "utils flux_updater"
+  cleanupFlux: "utils flux_cleanup"
+  fwhp: "utils flux_webhook_generator"
+  pods: "/workspaces/cluster/scripts/pods.sh"
+  gitConfig: "utils git_config"
+  gitReset: "utils git_reset"
+  tcdbinfo: "utils tcdbinfo"
+  stopAll: "utils stop_all"
+  k: "kubectl"
+  f: "flux"
+  gto: "gitops"
+  ct: clustertool
+  ctv: "ct info | awk -F': ' '/Clustertool Version/ {print $2}'"
+  tcl: talosctl
+  watcher: "utils watcher"
+  test-nvidia: "utils nvidia-smi"
+  hr-chart: "utils hr-chart"
