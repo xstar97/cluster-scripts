@@ -1,12 +1,25 @@
-# Description: Generates a webhook for github
-# Example: flux_webhook_generator
-function flux_webhook_generator
+# Description: Generates a webhook for GitHub with configurable namespace, receiver, and ingress
+# Example: flux_gen_webhook [-n custom-namespace] [-r custom-receiver] [-i custom-ingress]
+function flux_gen_webhook
     check_command "kubectl"
     check_command "flux"
-    # Namespace and receiver name
+
+    # Default values
     set NAMESPACE "flux-system"
     set RECEIVER_NAME "github-receiver"
     set INGRESS_NAME "webhook-receiver"
+
+    # Parse options
+    for i in (seq (count $argv))
+        switch $argv[$i]
+            case '-n' '--namespace'
+                set NAMESPACE $argv[(math $i + 1)]
+            case '-r' '--receiver'
+                set RECEIVER_NAME $argv[(math $i + 1)]
+            case '-i' '--ingress'
+                set INGRESS_NAME $argv[(math $i + 1)]
+        end
+    end
 
     # Retrieve the ingress URL (address or host)
     set BASE_URL (kubectl -n "$NAMESPACE" get ingress "$INGRESS_NAME" -o jsonpath='{.spec.rules[0].host}')

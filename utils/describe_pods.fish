@@ -1,24 +1,29 @@
 # Description: Get pod descriptions and logs for all pods in a namespace.
-# Example: describe_pods <namespace> [--save /path/to/dir] [--skip-pods "pod1-* pod2-*"]
+# Example: describe_pods [--save /path/to/dir] [--skip-pods "pod1-* pod2-*"] <namespace>
 function describe_pods
     check_command "kubectl"
 
-    if test (count $argv) -lt 1
-        echo "Usage: describe_pods <namespace> [--save /path/to/dir] [--skip-pods <pattern>]"
-        return 1
-    end
-
-    set namespace $argv[1]
     set save_dir ""
     set skip_pattern "volsync-*"
+    set namespace ""
 
     # Parse flags
-    for i in (seq 2 (count $argv))
+    for i in (seq 1 (count $argv))
         if test $argv[$i] = "--save"
             set save_dir $argv[(math $i + 1)]
         else if test $argv[$i] = "--skip-pods"
             set skip_pattern $argv[(math $i + 1)]
         end
+    end
+
+    # The last argument is assumed to be the namespace
+    set namespace $argv[(count $argv)]
+
+    # Ensure namespace is provided
+    if test -z "$namespace"
+        echo "Error: Namespace must be provided as the last argument."
+        echo "Usage: describe_pods [--save /path/to/dir] [--skip-pods <pattern>] <namespace>"
+        return 1
     end
 
     # Ensure pod names are handled correctly
