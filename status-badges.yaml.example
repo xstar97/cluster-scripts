@@ -1,0 +1,10 @@
+# uptime-kuma badges
+badges:
+  Uptime-Kuma: # group name
+    - internet: # name for badge
+      badge: 
+        url: "" # uptime kuma badge url ends with /status
+        queries:
+          style: "for-the-badge" # style for badge
+          label: "" label name
+      redirect: "" # url when badge is clicked on

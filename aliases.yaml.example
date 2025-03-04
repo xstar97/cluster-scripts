@@ -8,7 +8,7 @@ aliases:
   utils: "./scripts/utils.sh"
   pods: "./scripts/pods.sh"
   updateScripts: "git --git-dir=./scripts/.git --work-tree=./scripts pull"
-  genAlias: "utils gen_alias --config ./scripts/aliases.yaml"
+  genAlias: "utils gen_alias --config ./aliases.yaml"
   dns: "utils dns"
   updateFlux: "utils flux_updater"
   cleanupFlux: "utils flux_cleanup"
