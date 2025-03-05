@@ -1,11 +1,11 @@
 # Description: Stops and start a chart if stopAll is configured.
-# Example: chart_stop_all sonarr [--status](checks status) | run again to change the state
-function chart_stop_all
+# Example: stop_all sonarr [--status](checks status) | run again to change the state
+function stop_all
     check_command "kubectl"
     
     # Ensure chart name is provided
     if test (count $argv) -lt 1
-        echo "Usage: chart_stop_all <chart-name> -n <namespace> [--status]"
+        echo "Usage: stop_all <chart-name> -n <namespace> [--status]"
         return 1
     end
 

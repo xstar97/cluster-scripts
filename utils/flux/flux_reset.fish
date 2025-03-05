@@ -1,6 +1,6 @@
 # Description: Rebuilds cache for flux
-# Example: flux_cleanup
-function flux_cleanup
+# Example: flux_reset
+function flux_reset
     check_command "kubectl"
     check_command "flux"
     # Fetch the name of the kustomize-controller pod

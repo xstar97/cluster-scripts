@@ -1,6 +1,6 @@
 # Description: Gets the Chart and value data for a TC helm repo chart.
-# Example: chart_tc_info plex
-function chart_tc_info
+# Example: tc_info plex
+function tc_info
     echo "Initializing..."
     
     # Ensure necessary commands are available
@@ -9,7 +9,7 @@ function chart_tc_info
 
     if test (count $argv) -lt 1
         echo "Error: Chart name is required."
-        echo "Usage: chart_tc_info <chart_name> [--repo <repo_url>] [--values]"
+        echo "Usage: tc_info <chart_name> [--repo <repo_url>] [--values]"
         return 1
     end
 
@@ -28,14 +28,14 @@ function chart_tc_info
                 set show_values 1
             case "--help"
                 echo "Displaying help information..."
-                echo "Usage: chart_tc_info <chart_name> [--repo <repo_url>] [--values]"
+                echo "Usage: tc_info <chart_name> [--repo <repo_url>] [--values]"
                 echo "Options:"
                 echo "  --repo <repo_url>  The repository URL (defaults to oci://tccr.io/truecharts)"
                 echo "  --values           Show the default values of the chart"
                 return 0
             case '*'
                 echo "Error: Unknown option '$arg'"
-                echo "Usage: chart_tc_info <chart_name> [--repo <repo_url>] [--values]"
+                echo "Usage: tc_info <chart_name> [--repo <repo_url>] [--values]"
                 return 1
         end
     end
@@ -78,5 +78,4 @@ function chart_tc_info
         echo "Skipping values display as '--values' flag was not set."
     end
 
-    echo "chart_tc_info function execution completed."
 end

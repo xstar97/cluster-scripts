@@ -1,6 +1,6 @@
 # Description: Get cluster urls from a chart.
-# Example: chart_dns chart [namespace]
-function chart_dns
+# Example: dns chart [namespace]
+function dns
     check_command "kubectl"
     
     set app_names $argv

@@ -1,6 +1,6 @@
 # Description: Updates flux manually
-# Example: flux_updater
-function flux_updater
+# Example: flux_update
+function flux_update
     check_command flux
     echo "Reconciling Flux Git source..."
     if flux reconcile source git cluster cluster --verbose

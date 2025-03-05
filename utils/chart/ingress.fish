@@ -1,6 +1,6 @@
 # Description: Get domain URLs from a chart.
-# Example: chart_ingress chart [namespace]
-function chart_ingress
+# Example: ingress chart [namespace]
+function ingress
     check_command "kubectl"
     
     set app_names $argv
