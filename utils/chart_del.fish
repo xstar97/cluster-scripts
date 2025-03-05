@@ -1,8 +1,8 @@
 # Description: Deletes a chart via helm;flux.
-# Example: del_chart chart [-n chart] --flux --helm [-y]
-function del_chart
+# Example: chart_del chart [-n chart] --flux --helm [-y]
+function chart_del
     if test (count $argv) -lt 1
-        echo "Usage: del_chart CHART_NAME [-n NAMESPACE] [--helm] [--flux] [-y]"
+        echo "Usage: chart_del CHART_NAME [-n NAMESPACE] [--helm] [--flux] [-y]"
         return 1
     end
 

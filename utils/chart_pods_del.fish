@@ -1,6 +1,6 @@
 # Description: Deletes pods.
-# Example: del_pod
-function del_pod
+# Example: chart_pods_del
+function chart_pods_del
     check_command "kubectl"
     
     set test_mode false

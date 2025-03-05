@@ -1,6 +1,6 @@
 # Description: Get pod descriptions and logs for all pods in a namespace.
-# Example: describe_pods [--save /path/to/dir] [--skip-pods "pod1-* pod2-*"] <namespace>
-function describe_pods
+# Example: chart_get_pods [--save /path/to/dir] [--skip-pods "pod1-* pod2-*"] <namespace>
+function chart_get_pods
     check_command "kubectl"
 
     set save_dir ""
@@ -22,7 +22,7 @@ function describe_pods
     # Ensure namespace is provided
     if test -z "$namespace"
         echo "Error: Namespace must be provided as the last argument."
-        echo "Usage: describe_pods [--save /path/to/dir] [--skip-pods <pattern>] <namespace>"
+        echo "Usage: chart_get_pods [--save /path/to/dir] [--skip-pods <pattern>] <namespace>"
         return 1
     end
 

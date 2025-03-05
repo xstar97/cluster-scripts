@@ -1,8 +1,8 @@
 # Description: Find a chart that has a keyword.
-# Example: find_chart --check --keyword "stopAll: true"
-function find_chart
+# Example: chart_index --check --keyword "stopAll: true"
+function chart_index
     if test (count $argv) -ne 3; or test "$argv[1]" != "--check"; or test "$argv[2]" != "--keyword"
-        echo "Usage: find_chart --check --keyword <keyword_to_search>"
+        echo "Usage: chart_index --check --keyword <keyword_to_search>"
         return 1
     end
 

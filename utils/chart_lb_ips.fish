@@ -1,6 +1,6 @@
 # Description: Get unique external IPs from LoadBalancer services.
-# Example: load_balancer_ips [namespace]
-function load_balancer_ips
+# Example: chart_lb_ips [namespace]
+function chart_lb_ips
     check_command "kubectl"
     
     set app_names $argv

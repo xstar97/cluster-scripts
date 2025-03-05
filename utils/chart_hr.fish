@@ -1,9 +1,9 @@
 # Description: Find a chart locally
-# Example: hr_chart
-function hr_chart
+# Example: chart_hr
+function chart_hr
     # Ensure a chart name is provided
     if test (count $argv) -lt 1
-        echo "Usage: hr_chart <chart-name>"
+        echo "Usage: chart_hr <chart-name>"
         exit 1
     end
 
