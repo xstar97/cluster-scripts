@@ -79,7 +79,6 @@ cmd_check_app_names() {
 # Display header based on the mode
 cmd_header() {
     clear -x
-    title
     if [[ $1 == "logs" ]]; then
         echo -e "${bold}Logs to Container Menu${reset}"
     else
@@ -91,7 +90,6 @@ cmd_header() {
 # Print selected application, pod, and container details
 cmd_print_app_pod_container() {
     clear -x
-    title
     [[ -n $app_name ]] && echo -e "${bold}App Name:${reset}  ${blue}${app_name}${reset}"
     [[ -n $pod ]] && echo -e "${bold}Pod:${reset}       ${blue}${pod}${reset}"
     [[ -n $container ]] && echo -e "${bold}Container:${reset} ${blue}${container}${reset}"
