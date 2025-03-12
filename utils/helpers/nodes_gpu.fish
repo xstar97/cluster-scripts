@@ -19,7 +19,7 @@ function nodes_gpu
 
     # Set the correct GPU URL based on the --gpu flag
     if test $gpu_flag = "intel"
-        set gpu_url "gpu\.intel\.com\i915"
+        set gpu_url "gpu\.intel\.com/i915"
     else if test $gpu_flag = "nvidia"
         set gpu_url "nvidia\.com/gpu"
     else
