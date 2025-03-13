@@ -1,3 +1,5 @@
+# Description: inputs a file and outputs to shell a single line with \n
+# Example: file2nl /path/to/file
 function file2nl
     # Usage function
     function usage
