@@ -1,6 +1,6 @@
 # Description: Extracts a value from a key if its encrypted 
-# Example: extract_sops /path/to/file KEY
-function extract_sops
+# Example: sops_extract /path/to/file KEY
+function sops_extract
     set file "$argv[1]"
     set key "$argv[2]"
     if test -z "$file" -o -z "$key"

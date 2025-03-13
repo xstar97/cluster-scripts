@@ -1,6 +1,6 @@
 # Description: Get clusterenv key's value; encrypted or not.
-# Example: extract_clusterenv_val --key KEY
-function extract_clusterenv_val
+# Example: extract_clusterenv_key --key KEY
+function extract_clusterenv_key
     # Check if required commands are installed
     check_command "yq" > /dev/null 2>&1
     check_command "jq" > /dev/null 2>&1
@@ -23,8 +23,8 @@ function extract_clusterenv_val
     end
 
     # Check if CONFIG is encrypted and extract values accordingly
-    if check_sops "$CONFIG" | grep -q "true"
-        set CLUSTER_KEY_VAL (extract_sops "$CONFIG" "$CLUSTER_KEY")
+    if sops_status "$CONFIG" | grep -q "true"
+        set CLUSTER_KEY_VAL (sops_extract "$CONFIG" "$CLUSTER_KEY")
     else
         set CLUSTER_KEY_VAL (yq eval ".$CLUSTER_KEY" "$CONFIG")
     end

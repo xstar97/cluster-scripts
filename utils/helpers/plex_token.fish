@@ -19,7 +19,7 @@ function plex_token
 
     echo "url: $PLEX_URL"
 
-    # Check if CONFIG is encrypted and extract values accordingly
+    # Extracts the plex auth values from clusterenv
     set PLEX_USER (extract_clusterenv_key --key "PLEX_USER")
     set PLEX_PASS (extract_clusterenv_key --key "PLEX_PASS")
 
