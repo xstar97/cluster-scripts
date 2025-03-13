@@ -8,7 +8,7 @@ function sops_extract
         return 1
     end
 
-    if check_sops "$file" | grep -q "true"
+    if sops_status "$file" | grep -q "true"
         sops decrypt "$file" --extract "[\"$key\"]"
     else
         echo "File is not encrypted." >&2
