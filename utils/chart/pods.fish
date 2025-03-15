@@ -8,5 +8,5 @@ function pods
     set script_dir (dirname (status --current-filename))
 
     # Source the pods.sh script from the utils/chart directory
-    "$script_dir/utils/chart/pods.sh" $argv
+    "$script_dir/pods.sh" $argv
 end
