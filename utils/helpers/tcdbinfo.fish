@@ -2,6 +2,7 @@
 # Example: tcdbinfo
 function tcdbinfo
     check_command "kubectl"
+    check_command "column"
     # Get namespaces and secret names
     set namespaces (kubectl get secrets -A | grep -E "dbcreds|cnpg-main-urls" | awk '{print $1, $2}')
 
