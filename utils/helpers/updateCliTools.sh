@@ -2,8 +2,6 @@
 
 # Set the base path for the cluster
 BASE_PATH="$PWD"
-
-# Define the path for talconfig
 yaml_file="$BASE_PATH/clusters/main/talos/talconfig.yaml"
 
 # Generic function to update a CLI tool
@@ -14,104 +12,84 @@ update_cli_tool() {
 
     echo "Updating $cli_tool to version $version..."
 
-    # Download the new version
+    # Extract the filename from the URL
+    filename=$(basename "$download_url")
+
+    # Download the file
     curl -LO "$download_url"
     if [[ $? -ne 0 ]]; then
         echo "Error downloading $cli_tool from $download_url"
         exit 1
     fi
 
-    # Make the binary executable and move it to the correct location
-    chmod +x "$cli_tool-linux-amd64"
-    sudo mv "$cli_tool-linux-amd64" /usr/local/bin/"$cli_tool"
+    if [[ ! -f "$filename" ]]; then
+        echo "Download failed or filename mismatch: $filename not found"
+        exit 1
+    fi
+
+    # Make it executable and move it to /usr/local/bin
+    chmod +x "$filename"
+    sudo mv "$filename" /usr/local/bin/"$cli_tool"
 
     echo "$cli_tool updated to version $version"
 }
 
-# Function to get the installed version of talosctl
+# Get installed talosctl version
 get_installed_talosctl_version() {
-    talosctl version --short --client | awk '/Client/ {print $2}' | tr -d '"' | tr -d '[:space:]'
+    talosctl version --short 2>/dev/null | awk '/^Talos / {print $2}'
 }
 
-# Function to get the installed version of kubectl
+# Get installed kubectl version
 get_installed_kubectl_version() {
-    kubectl version --client --client | awk -F ": " '/Client Version/ {print $2}' | tr -d '"' | tr -d '[:space:]'
+    kubectl version --client --client 2>/dev/null | awk -F ": " '/Client Version/ {print $2}' | tr -d '"' | tr -d '[:space:]'
 }
 
-# Function to update Talosctl
+# Update talosctl
 update_talosctl() {
-    # Extract the Talos version from talconfig
     talos_version=$(grep '^talosVersion:' "$yaml_file" | awk '{print $2}' | tr -d '"' | tr -d '[:space:]')
+    [[ -z "$talos_version" ]] && { echo "Error: Talos version not found in $yaml_file"; exit 1; }
 
-    if [[ -z "$talos_version" ]]; then
-        echo "Error: Unable to extract Talos version from $yaml_file"
-        exit 1
-    fi
+    echo "Talos version from config: $talos_version"
 
-    echo "Talos version from talconfig: $talos_version"
-
-    # Get the installed Talosctl version
     installed_version=$(get_installed_talosctl_version)
-
-    if [[ -z "$installed_version" ]]; then
-        echo "Error: Unable to determine installed talosctl version"
-        exit 1
-    fi
+    [[ -z "$installed_version" ]] && { echo "Error: Installed talosctl version not found"; exit 1; }
 
     echo "Installed talosctl version: $installed_version"
 
-    # Compare versions
     if [[ "$talos_version" == "$installed_version" ]]; then
-        echo "talosctl is up-to-date. No update needed."
+        echo "talosctl is up-to-date."
         exit 0
     fi
 
-    # Define the download URL for Talosctl
     download_url="https://github.com/siderolabs/talos/releases/download/$talos_version/talosctl-linux-amd64"
-
-    # Call the generic update function
     update_cli_tool "talosctl" "$talos_version" "$download_url"
 }
 
-# Function to update Kubectl
+# Update kubectl
 update_kubectl() {
-    # Extract the Kubernetes version from talconfig
     kubernetes_version=$(grep '^kubernetesVersion:' "$yaml_file" | awk '{print $2}' | tr -d '"' | tr -d '[:space:]')
+    [[ -z "$kubernetes_version" ]] && { echo "Error: Kubernetes version not found in $yaml_file"; exit 1; }
 
-    if [[ -z "$kubernetes_version" ]]; then
-        echo "Error: Unable to extract Kubernetes version from $yaml_file"
-        exit 1
-    fi
+    echo "Kubernetes version from config: $kubernetes_version"
 
-    echo "Kubernetes version from talconfig: $kubernetes_version"
-
-    # Get the installed Kubectl version
     installed_version=$(get_installed_kubectl_version)
-
-    if [[ -z "$installed_version" ]]; then
-        echo "Error: Unable to determine installed kubectl version"
-        exit 1
-    fi
+    [[ -z "$installed_version" ]] && { echo "Error: Installed kubectl version not found"; exit 1; }
 
     echo "Installed kubectl version: $installed_version"
 
-    # Compare versions
     if [[ "$kubernetes_version" == "$installed_version" ]]; then
-        echo "kubectl is up-to-date. No update needed."
+        echo "kubectl is up-to-date."
         exit 0
     fi
 
-    # Define the download URL for Kubectl
     download_url="https://dl.k8s.io/release/$kubernetes_version/bin/linux/amd64/kubectl"
-
-    # Call the generic update function
     update_cli_tool "kubectl" "$kubernetes_version" "$download_url"
 }
 
-# Main function to handle flags and call the respective update function
+# Main handler
 main() {
     if [[ $# -eq 0 ]]; then
-        echo "Error: No flags provided. Use --kubectl or --talosctl to update the respective CLI tools."
+        echo "Usage: $0 [--kubectl | --talosctl]"
         exit 1
     fi
 
@@ -123,11 +101,10 @@ main() {
             update_talosctl
             ;;
         *)
-            echo "Error: Invalid flag. Use --kubectl or --talosctl to update the respective CLI tools."
+            echo "Invalid option: $1. Use --kubectl or --talosctl."
             exit 1
             ;;
     esac
 }
 
-# Call the main function
 main "$@"
