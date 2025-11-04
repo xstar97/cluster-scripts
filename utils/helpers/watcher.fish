@@ -1,22 +1,33 @@
-# Description: Repeats a script for X time in seconds
-# Example: watcher [-n 2] "kubectl get pods -n sonarr"
+# Description: Repeats a script for X seconds using viddy (falls back to watch)
+# Example: watcher 2 "kubectl get pods -n sonarr"
 function watcher
-    check_command "watch"
-    # Check if at least one argument (command) is provided
+    # Ensure viddy is installed, fallback to watch if not
+    if not check_command "viddy"
+        echo "viddy not found, falling back to watch"
+        set USE_WATCH 1
+    end
+
+    # Require at least one argument (the command)
     if test (count $argv) -lt 1
         echo "Usage: watcher [interval] <command...>"
         return 1
     end
 
-    # Default interval is 5 seconds
+    # Default refresh interval
     set INTERVAL 5
 
-    # If the first argument is a number, use it as the interval
+    # If first arg is a number, treat it as interval
     if echo $argv[1] | grep -qE '^[0-9]+$'
         set INTERVAL $argv[1]
-        set argv (tail -n +2 $argv)  # Shift to remove interval argument, leaving only the command
+        set argv (tail -n +2 $argv)
     end
 
-    # Run watch with the determined interval and command
-    watch -n $INTERVAL $argv
+    # Run the command using viddy if installed, otherwise use watch
+    if test -n "$USE_WATCH"
+        # Fall back to watch if viddy is not available
+        watch -n $INTERVAL $argv
+    else
+        # Use viddy if available
+        viddy -n $INTERVAL -- $argv
+    end
 end
